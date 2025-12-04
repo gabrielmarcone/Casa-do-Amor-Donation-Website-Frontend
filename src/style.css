@@ -1,0 +1,1300 @@
+/* --- RESET GLOBAL E FONTE PADRÃO --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  background-color: #FFFFFF; 
+}
+
+body.modal-open {
+  overflow: hidden;
+}
+
+/* --- ESTILOS DO APP BAR --- */
+
+.app-bar {
+  background-color: #e9e9e9;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000; 
+}
+
+main {
+  padding-top: 90px;
+}
+
+.logo img {
+  height: 50px; 
+  width: auto; 
+}
+
+.main-nav ul {
+  list-style: none; 
+  display: flex; 
+  background-color: #5C90C7;
+  border-radius: 9999px;
+  padding: 8px 45px; 
+  gap: 35px; 
+  align-items: center;
+}
+
+.main-nav a {
+  color: #FFFFFF;
+  text-decoration: none;
+  display: block; 
+  border-radius: 9999px;
+  font-size: 15px; 
+  font-weight: 600;
+  padding: 4px 0; 
+}
+
+.main-nav a.active {
+  background-color: #8FB9E0; 
+  padding: 8px 8px; 
+}
+
+.button-donate {
+  color: #FFFFFF;
+  font-size: 16px; 
+  font-weight: 600;
+  text-decoration: none;
+  background: linear-gradient(to right, #28539C, #0E1D36);
+  border-radius: 9999px; 
+  padding: 14px 28px;
+  cursor: pointer;
+}
+
+/* --- 
+   Seção Hero ("O câncer muda tudo") 
+--- */
+
+.hero-section {
+  background: url('/juntos.png') no-repeat center center/cover;
+  min-height: 550px; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 90%);
+  z-index: 2; 
+}
+
+.hero-content {
+  text-align: center;
+  max-width: 700px;
+  padding: 20px; 
+  color: #262626; 
+  position: relative;
+}
+
+.hero-content h1 {
+  font-weight: 600;
+  font-size: 3.5rem; 
+}
+
+.hero-content p {
+  font-weight: 400;
+  font-size: 1.125rem; 
+  line-height: 1.7; 
+  margin-top: 25px; 
+}
+
+
+/* --- 
+   SEÇÃO 2: DOAÇÃO
+--- */
+
+.donation-section {
+  background-color: #FFFFFF; 
+  padding: 120px 40px 60px; 
+  margin-top: -55px;
+  position: relative; 
+  z-index: 1;
+}
+
+.donation-container {
+  background-color: #e9e9e9; 
+  border-radius: 15px; 
+  padding: 40px;
+  max-width: 1200px; 
+  margin: 0 auto; 
+  display: flex;
+  gap: 40px;
+}
+
+.donation-content-left {
+  flex: 1; 
+  display: flex;
+  flex-direction: column;
+  gap: 15px; 
+}
+
+.button-donate-small {
+  background: linear-gradient(to right, #28539C, #0E1D36);
+  color: #FFFFFF;
+  text-decoration: none;
+  align-self: flex-start; 
+  font-size: 13px; 
+  font-weight: 600;
+  padding: 6px 18px;
+  border-radius: 8px; 
+}
+
+.donation-content-left h2 {
+  font-family: 'Open Sans', sans-serif;
+  color: #262626;
+  line-height: 1.3;
+  font-weight: 700; 
+  font-size: 26px; 
+}
+
+.donation-content-left p {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400; 
+  color: #333;
+  line-height: 1.5;
+  font-size: 15px; 
+}
+
+.donation-form-right {
+  flex: 0 0 400px; 
+}
+
+/* Estilo reutilizado pelo Modal */
+.donation-options {
+  background-color: #FFFFFF;
+  border: 1px solid #D0D0D0; 
+  border-radius: 10px;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px; 
+}
+
+.option-group {
+  display: flex;
+  gap: 10px;
+}
+
+.option-group .option-button {
+  flex: 1; 
+}
+
+.option-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.option-button {
+  background-color: #FFFFFF;
+  border: 1px solid #B0B0B0;
+  border-radius: 8px;
+  padding: 12px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: #444;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.option-button:hover {
+  border-color: #28539C;
+}
+
+.option-button.active {
+  background-color: #EBF3FF;
+  border-color: #5C90C7;
+  color: #0E1D36;
+}
+
+.amount-input-wrapper {
+  display: flex;
+  align-items: center;
+  border: 1px solid #B0B0B0;
+  border-radius: 8px;
+  background-color: #F8F8F8; 
+  padding: 10px 15px;
+}
+
+.amount-input-wrapper span {
+  font-size: 24px;
+  font-weight: 600;
+  color: #888;
+  margin-right: 10px;
+}
+
+.amount-input {
+  border: none;
+  outline: none;
+  background: none;
+  width: 100%;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: #0E1D36;
+}
+
+.button-submit-donate {
+  background: linear-gradient(to right, #28539C, #0E1D36);
+  color: #FFFFFF;
+  font-size: 16px; 
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
+  border-radius: 8px; 
+  padding: 16px;
+  width: 100%;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.button-submit-donate:hover {
+  opacity: 0.9;
+}
+
+.button-primary-gradient:disabled,
+.button-submit-donate:disabled {
+  background: #B0B0B0;
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+
+@media (max-width: 900px) {
+  .donation-container {
+    flex-direction: column; 
+  }
+  .donation-form-right {
+    flex: 0 0 auto; 
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-bar { padding: 15px 20px; }
+  main { padding-top: 80px; }
+  .hero-content h1 { font-size: 2.5rem; }
+  .hero-content p { font-size: 1rem; }
+  .donation-section { padding: 80px 20px 40px; margin-top: -45px; }
+  .donation-container { padding: 25px; }
+  .donation-content-left h2 { font-size: 20px; }
+  .donation-content-left p { font-size: 13px; line-height: 1.5; }
+  .option-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* --- 
+   SEÇÃO 3: COMO AJUDAR (AZUL)
+--- */
+.how-to-help-section {
+  background-color: #28539C;
+  color: #FFFFFF;
+  text-align: center;
+  padding: 40px 40px; 
+}
+.section-title {
+  font-weight: 700;
+  margin-bottom: 50px; 
+  font-size: 40px; 
+}
+.help-columns-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 30px; 
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.help-column {
+  flex: 1; 
+  display: flex;
+  flex-direction: column;
+  gap: 20px; 
+  text-align: center; 
+}
+.help-column h3 {
+  font-weight: 700;
+  line-height: 1.3;
+  font-size: 22px; 
+}
+.help-column p {
+  font-weight: 400;
+  line-height: 1.6;
+  flex-grow: 1; 
+  font-size: 15px; 
+}
+.button-secondary {
+  background-color: #FFFFFF;
+  color: #28539C;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 9999px; 
+  transition: all 0.2s ease;
+  white-space: nowrap; 
+  align-self: center; 
+  font-size: 14px;
+  padding: 12px 26px; 
+}
+.button-secondary:hover { opacity: 0.9; transform: translateY(-2px); }
+
+@media (max-width: 900px) {
+  .help-columns-container { flex-direction: column; align-items: center; gap: 40px; }
+  .help-column { max-width: 500px; }
+  .help-column p { flex-grow: 0; }
+  .section-title { font-size: 32px; }
+}
+
+/* --- 
+   SEÇÃO 4: FAÇA A DIFERENÇA (BRANCA/CENTRAL)
+--- */
+.cta-section {
+  background-color: #FFFFFF; 
+  padding: 60px 40px; 
+  text-align: center; 
+}
+.cta-content {
+  max-width: 900px; 
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  gap: 25px; 
+}
+.cta-content h2 {
+  font-weight: 700;
+  font-size: 40px; 
+  color: #262626; 
+}
+.cta-content p {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.7;
+  color: #525252; 
+}
+.button-primary-gradient {
+  background: linear-gradient(to right, #28539C, #0E1D36);
+  color: #FFFFFF;
+  font-size: 16px; 
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
+  border-radius: 8px; 
+  padding: 12px 28px; 
+  margin-top: 10px; 
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-block; 
+}
+.button-primary-gradient:hover { opacity: 0.9; transform: translateY(-2px); }
+
+@media (max-width: 768px) {
+  .cta-section { padding: 60px 20px; }
+  .cta-content h2 { font-size: 32px; }
+  .cta-content p { font-size: 15px; }
+}
+
+/* --- 
+   SEÇÃO 5: SLIDER HISTÓRIA (ROSA)
+--- */
+.story-slider-section {
+  background-color: #E96266;
+  color: #FFFFFF;
+  padding: 80px 40px;
+}
+.story-slider-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.story-slider-content {
+  flex: 1;
+  min-height: 250px;
+  position: relative;
+}
+.story-slide {
+  display: none;
+  flex-direction: column;
+  gap: 30px; 
+}
+.story-slide.active { display: flex; }
+.story-slide h2 {
+  font-weight: 700;
+  font-size: 2.5rem;
+  line-height: 1.2;
+}
+.story-slide p {
+  font-weight: 400;
+  font-size: 1.25rem;
+  line-height: 1.6;
+  max-width: 450px; 
+}
+.story-slider-next {
+  background-color: #FFFFFF;
+  border: none;
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  min-width: 70px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+.story-slider-next:hover { transform: scale(1.1); }
+.story-slider-next svg { transform: translateX(2px); }
+
+@media (max-width: 768px) {
+  .story-slider-section { padding: 60px 20px; }
+  .story-slider-wrapper { flex-direction: column; gap: 40px; }
+  .story-slide h2 { font-size: 2rem; }
+  .story-slide p { font-size: 1rem; max-width: none; }
+}
+
+/* --- 
+   SEÇÃO 6: FACILIDADES (3 CARDS AZUIS)
+--- */
+.features-section {
+  background-color: #FFFFFF;
+  padding: 80px 40px;
+}
+.features-content-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+.features-content-wrapper h2 {
+  font-weight: 700;
+  font-size: 40px; 
+  color: #262626; 
+  max-width: 700px;
+  margin: 0 auto 50px auto;
+  line-height: 1.3;
+}
+.features-container {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-bottom: 50px;
+}
+.feature-card {
+  flex: 1;
+  background-color: #28539C;
+  color: #FFFFFF;
+  border-radius: 20px;
+  padding: 15px 30px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.feature-icon {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background-color: #28539C;
+  border: 2px solid #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 5px;
+}
+.feature-icon svg {
+  width: 40px;
+  height: 40px;
+  stroke: #FFFFFF;
+  opacity: 0.8;
+}
+.feature-card h3 {
+  font-weight: 700;
+  font-size: 22px;
+}
+.feature-card p {
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+  .features-container { flex-direction: column; align-items: center; }
+  .feature-card { max-width: 450px; width: 100%; }
+}
+@media (max-width: 768px) {
+  .features-section { padding: 60px 20px; }
+  .features-content-wrapper h2 { font-size: 32px; }
+}
+
+/* --- 
+   SEÇÃO 7: IMPACTO (VÍDEO)
+--- */
+.impact-section {
+  background-color: #28539C;
+  padding: 80px 40px;
+}
+.impact-content-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+.impact-content-wrapper h2 {
+  font-weight: 700;
+  font-size: 40px;
+  color: #FFFFFF;
+  margin-bottom: 50px; 
+}
+.video-placeholder {
+  background-color: #E96266;
+  max-width: 900px;
+  margin: 0 auto;
+  aspect-ratio: 16 / 9;
+  border-radius: 15px;
+}
+
+@media (max-width: 768px) {
+  .impact-section { padding: 60px 20px; }
+  .impact-content-wrapper h2 { font-size: 32px; }
+}
+
+/* --- 
+   SEÇÃO 8: RODAPÉ (VERSÃO CORRIGIDA)
+--- */
+.site-footer {
+  background-color: #e9e9e9; 
+  padding: 50px 40px;
+  color: #333; 
+  font-size: 14px;
+  line-height: 1.7;
+}
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: auto 2fr 1fr 1.2fr;
+  gap: 40px;
+}
+.footer-column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.footer-logo {
+  height: 50px;
+  width: auto;
+}
+.footer-column h4 {
+  font-weight: 600;
+  font-size: 16px;
+  color: #262626;
+  margin-bottom: 5px; 
+}
+.footer-column p {
+  font-weight: 400;
+  font-size: 14px;
+  color: #525252;
+  margin: 0;
+}
+.footer-copyright-wrapper {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.footer-copyright-wrapper p {
+  font-size: 13px;
+  color: #525252;
+  line-height: 1.5;
+}
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.footer-column ul a {
+  font-weight: 400;
+  color: #525252;
+  text-decoration: none;
+}
+.footer-column ul a:hover { text-decoration: underline; }
+
+.footer-column p.footer-alert {
+  font-weight: 400; 
+  color: #D93030;
+  font-size: 13px;
+  line-height: 1.5;
+  margin-top: auto;
+}
+.footer-social-column { gap: 18px; }
+.social-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  font-weight: 600;
+  color: #333;
+  font-size: 15px;
+}
+.social-link svg { fill: #28539C; }
+.footer-donate-button {
+  width: 100%; 
+  text-align: center;
+  padding-top: 14px;
+  padding-bottom: 14px;
+  font-size: 15px;
+  margin-top: auto;
+}
+
+@media (max-width: 1024px) {
+  .footer-container { grid-template-columns: 1fr 1fr; gap: 50px; }
+  .footer-logo-column { grid-column: 1 / 3; justify-self: start; }
+  .footer-column p.footer-alert { margin-top: 20px; }
+  .footer-donate-button { margin-top: 20px; }
+}
+@media (max-width: 768px) {
+  .site-footer { padding: 40px 20px; }
+  .footer-container { grid-template-columns: 1fr; gap: 40px; }
+  .footer-logo-column { grid-column: auto; }
+  .footer-donate-button { align-self: flex-start; max-width: 300px; }
+}
+
+/* --- LÓGICA DE EXIBIÇÃO DE PÁGINA (SPA) --- */
+.page-content { display: none; }
+.page-content.active { display: block; }
+
+/* --- PÁGINA DE VOLUNTARIADO --- */
+.volunteer-page-section {
+  background-color: #e9e9e9;
+  padding: 60px 40px;
+  min-height: calc(100vh - 90px - 300px);
+}
+.volunteer-form-container {
+  max-width: 900px;
+  margin: 0 auto;
+  background-color: #FFFFFF;
+  border-radius: 15px;
+  padding: 40px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+.volunteer-header-image {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  object-fit: cover;
+}
+.volunteer-form-container h2 {
+  font-weight: 600;
+  font-size: 32px;
+  color: #28539C;
+  margin-bottom: 15px;
+}
+.volunteer-form-container p {
+  font-weight: 400;
+  font-size: 16px;
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 40px;
+}
+.volunteer-form { display: flex; flex-direction: column; }
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+}
+.form-group { display: flex; flex-direction: column; gap: 8px; }
+.form-group-full {
+  grid-column: 1 / 3;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.form-group label,
+.form-group-full label {
+  font-weight: 400;
+  color: #262626;
+  font-size: 15px;
+}
+.form-input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid #C4C4C4;
+  border-radius: 8px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: #333;
+  transition: border-color 0.2s ease;
+}
+.form-input:focus { outline: none; border-color: #28539C; }
+.form-input::placeholder { color: #C4C4C4; font-weight: 400; }
+textarea.form-input { min-height: 120px; resize: vertical; }
+.volunteer-submit-button {
+  align-self: flex-end;
+  margin-top: 30px;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+@media (max-width: 768px) {
+  .volunteer-page-section { padding: 40px 20px; }
+  .volunteer-form-container { padding: 25px; }
+  .volunteer-form-container h2 { font-size: 26px; }
+  .volunteer-form-container p { font-size: 15px; }
+  .form-grid { grid-template-columns: 1fr; gap: 20px; }
+  .form-group-full { grid-column: auto; }
+  .volunteer-submit-button { align-self: stretch; }
+}
+
+/* --- 
+   ★ ★ ★ FLUXO DO MODAL DE DOAÇÃO (CORREÇÃO DE LAYOUT) ★ ★ ★
+--- */
+
+#donation-modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(30, 30, 30, 0.6);
+  z-index: 2000;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+#modal-container {
+  display: none; 
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2001;
+  display: flex;
+  align-items: flex-start;
+  gap: 30px; 
+}
+
+/* ★ CARD DA ESQUERDA (INFO) ★ */
+#modal-info-card {
+  width: 440px;
+  height: 610px; /* Altura Fixa */
+  border-radius: 12px;
+  background-color: #FFFFFF;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.modal-image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.modal-left-content {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.modal-logo {
+  height: 40px;
+  width: auto;
+  align-self: flex-start;
+}
+.modal-left-content p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #525252;
+}
+.modal-left-content p b {
+  font-weight: 700;
+  color: #262626;
+}
+
+/* ★ CARD DA DIREITA (FLUXO) ★ */
+#modal-donation-flow {
+  width: 450px;
+  height: 610px; /* Altura Fixa */
+  border-radius: 12px;
+  background-color: #FFFFFF;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  padding: 40px 30px 30px 30px;
+  position: relative;
+  overflow: hidden;
+}
+
+
+.modal-close-button, .modal-back-button {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  color: #888;
+  z-index: 10;
+}
+.modal-close-button:hover, .modal-back-button:hover {
+  color: #333;
+}
+.modal-back-button {
+  right: auto;
+  left: 20px;
+  display: none;
+}
+
+.modal-step {
+  display: none;
+  flex-direction: column;
+  height: 100%; /* Isso faz o "step" ocupar os 610px */
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-step.active {
+  display: flex;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-step-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #262626;
+  margin-bottom: 25px;
+  flex-shrink: 0;
+}
+.modal-step-header h4 {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0;
+}
+.modal-step-header svg {
+  flex-shrink: 0;
+}
+
+
+
+/* --- Estilos do Passo 1 (Re-estilizando) --- */
+
+#modal-donation-flow .donation-options {
+  border: none;
+  background-color: transparent;
+  padding: 0;
+  flex-grow: 1; /* Faz este container crescer */
+  display: flex;
+  flex-direction: column;
+}
+
+#modal-donation-flow .option-grid {
+  margin-top: 25px; /* Espaço normal */
+}
+#modal-donation-flow .amount-input-wrapper {
+  margin-top: 40px; /* Espaço extra que você pediu */
+}
+
+#modal-donation-flow .button-submit-donate {
+  padding: 18px;
+  font-size: 17px;
+  margin-top: auto; /* Empurra o botão para baixo */
+}
+
+#modal-donation-flow .option-button {
+  padding: 14px;
+}
+
+
+
+/* --- Estilos do Passo 2 (Formulário de Infos) --- */
+.modal-form-content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; 
+  gap: 15px;
+}
+
+.modal-step[data-step="2"] .modal-form-content {
+  gap: 20px; 
+}
+
+.modal-step[data-step="2"] .modal-step-header {
+  margin-top: 30px;
+}
+
+
+.modal-form-content .button-primary-gradient {
+  padding: 18px;
+  font-size: 17px;
+  margin-top: auto; /* Empurra o botão para baixo */
+}
+
+/* --- ★★★ ESTILOS DO PASSO 3 (SÓCIO) - ATUALIZADO ★★★ --- */
+
+/* 1. Descer o título */
+.modal-step[data-step="3-socio"] .modal-step-header {
+  margin-top: 30px;
+}
+
+/* 2. Remove o gap do form-content para juntar os inputs */
+.modal-step[data-step="3-socio"] .modal-form-content {
+  gap: 0;
+}
+
+/* 3. Botão de Pagamento (com ícone) */
+.payment-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 30px; /* Espaço após o botão */
+  flex-shrink: 0;
+}
+.payment-option-button {
+  width: 100%;
+  padding: 16px;
+  background-color: #FFFFFF;
+  border: 1px solid #C4C4C4;
+  border-radius: 8px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #444;
+  cursor: pointer;
+  text-align: left;
+  /* Adições para o ícone */
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.payment-option-button svg {
+  stroke: #525252; /* Cor padrão */
+  width: 22px; height: 22px;
+  flex-shrink: 0;
+}
+.payment-option-button.active {
+  border-color: #28539C;
+  background-color: #EBF3FF;
+}
+.payment-option-button.active svg {
+  stroke: #28539C; /* Cor quando ativo */
+}
+
+/* 4. Remove a caixa cinza (agora inútil) */
+.payment-content {
+  padding: 0;
+  background-color: transparent;
+  border-radius: 0;
+  margin-bottom: 0;
+  min-height: auto;
+  flex-shrink: 0;
+}
+.payment-content small {
+  display: none; /* Esconde a 'small' original */
+}
+
+/* 5. Nova Estrutura de Inputs do Cartão */
+.card-input-field {
+  position: relative;
+}
+.card-input-field .form-input {
+  border-radius: 8px 8px 0 0; /* Cantos de cima */
+  border-bottom: none; /* Remove borda de baixo */
+}
+
+.card-input-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0; /* Remove o gap */
+}
+.card-input-grid .form-input {
+  border-radius: 0; /* Sem cantos arredondados */
+  border-top: 1px solid #C4C4C4; /* Linha que divide de "Número" */
+}
+.card-input-grid .form-input:first-child {
+  border-radius: 0 0 0 8px; /* Canto inferior esquerdo */
+  border-right: none; /* Remove borda para juntar */
+}
+.card-input-grid .form-input:last-child {
+  border-radius: 0 0 8px 0; /* Canto inferior direito */
+  border-left: 1px solid #C4C4C4; /* Linha que divide Venc/CVV */
+}
+
+/* 6. Novo Texto de Aviso */
+.payment-note {
+  display: block;
+  font-size: 12px; 
+  color: #333; /* Cor escura/preta */
+  font-weight: 400; /* Regular */
+  line-height: 1.6;
+  margin-top: 25px; /* Espaço dos inputs */
+}
+
+
+/* --- ★★★ ESTILOS DO PASSO 3 (UNITÁRIA) - ATUALIZADO ★★★ --- */
+
+/* 1. Descer o título */
+.modal-step[data-step="3-unitaria"] .modal-step-header {
+  margin-top: 30px;
+}
+
+/* 2. Remove o gap do form-content */
+.modal-step[data-step="3-unitaria"] .modal-form-content {
+  gap: 0;
+}
+
+/* 3. Grid de Botões */
+.payment-options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 25px; /* Espaçamento entre os botões e o conteúdo */
+}
+.payment-options-grid .payment-option-button {
+  padding: 14px 10px;
+  justify-content: center;
+  gap: 8px;
+}
+.payment-options-grid .payment-option-button svg {
+  width: 20px; height: 20px;
+}
+
+/* 4. Conteúdo Dinâmico */
+.payment-content-viewer {
+  background-color: transparent;
+  border-radius: 8px;
+  padding: 0;
+  transition: background-color 0.2s ease;
+  margin-bottom: 0; 
+}
+.payment-content-block {
+  display: none; /* Escondido por padrão */
+  flex-direction: column;
+  gap: 10px; /* ★ MUDANÇA: Diminuído o gap */
+  border-radius: 8px; 
+}
+.payment-content-block.active {
+  display: flex; /* Visível */
+}
+
+/* ★ MUDANÇA: O padding agora é aqui */
+.payment-content-block#payment-content-pix,
+.payment-content-block#payment-content-boleto {
+  background-color: #f6f6f6;
+  padding: 15px; 
+  align-items: center; 
+}
+
+.payment-content-block#payment-content-cartao {
+  background-color: transparent;
+  padding: 0;
+  gap: 0; /* Remove gap para grudar inputs */
+  align-items: stretch; /* Para os inputs terem 100% */
+}
+
+.payment-content-block p {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+}
+.payment-content-block p.small-text {
+  font-size: 13px;
+  font-weight: 400;
+  margin-top: 0;
+}
+
+/* 5. Estilos dos Mocks */
+.mock-qr-code {
+  width: 130px; /* ★ MUDANÇA: Diminuído */
+  height: 130px; /* ★ MUDANÇA: Diminuído */
+  background-color: #fff;
+  border: 1px solid #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #888;
+  padding: 10px;
+}
+.mock-barcode {
+  width: 100%;
+  max-width: 300px;
+  height: 50px; /* ★ MUDANÇA: Diminuído */
+  border: 1px solid #ccc;
+  background-color: #fff;
+  background-image: linear-gradient(to right, 
+    #333 1px, transparent 1px, transparent 2px, #333 2px, #333 3px, transparent 3px, transparent 5px, 
+    #333 5px, #333 6px, transparent 6px, transparent 8px, #333 8px, #333 10px, transparent 10px, transparent 11px, 
+    #333 11px, #333 12px, transparent 12px, transparent 14px, #333 14px);
+  background-repeat: repeat-x;
+  background-size: 250% 100%;
+  background-position: center;
+}
+
+.payment-content-block .form-input[readonly] {
+  background-color: #fff;
+  border-color: #ccc;
+  text-align: center;
+  font-size: 13px;
+  color: #555;
+  padding: 10px;
+  user-select: all;
+}
+.payment-content-block .button-primary-gradient {
+  width: 100%;
+  padding: 14px; 
+  font-size: 15px;
+  margin-top: 0;
+}
+
+
+/* --- Total (Comum a ambos) --- */
+.payment-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0;
+  border-top: 1px solid #e0e0e0;
+  margin-top: auto;
+  flex-shrink: 0;
+}
+.payment-total span {
+  font-size: 16px;
+  color: #525252;
+}
+.payment-total b {
+  font-size: 20px;
+  font-weight: 700;
+  color: #262626;
+}
+
+
+/* ★★★ NOVOS ESTILOS DO MODAL DE AGRADECIMENTO ★★★ */
+
+#thank-you-modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(30, 30, 30, 0.6);
+  z-index: 3000; /* Mais alto que o modal de doação */
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+#thank-you-modal-container {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3001;
+  
+  width: 90%;
+  max-width: 460px;
+  background-color: #f0f0f0;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 40px 30px 30px 30px;
+}
+
+.thank-you-logo {
+  height: 60px;
+  width: auto;
+  margin-bottom: 25px;
+}
+
+#thank-you-title {
+  font-weight: 700;
+  font-size: 24px;
+  color: #262626;
+  margin-bottom: 20px;
+}
+
+#thank-you-modal-container p {
+  font-weight: 400;
+  font-size: 16px;
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+#thank-you-modal-container p:last-of-type {
+  margin-bottom: 30px;
+}
+
+.thank-you-button {
+  width: 100%;
+  padding: 16px;
+  font-size: 16px;
+}
+
+
+/* Responsividade do Modal (CORRIGIDA) */
+@media (max-width: 900px) {
+  #modal-container {
+     gap: 0;
+     width: 90%;
+     max-width: 450px;
+  }
+  
+  #modal-info-card {
+    display: none;
+  }
+  
+  #modal-donation-flow {
+    width: 100%;
+    height: auto;
+    min-height: auto; 
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  
+  .modal-step {
+    height: auto;
+  }
+  
+  .modal-back-button {
+    left: 15px;
+  }
+  .modal-close-button {
+    right: 15px;
+  }
+
+  /* Ajuste para grid de 3 colunas em tela pequena */
+  .payment-options-grid .payment-option-button {
+    font-size: 14px;
+    gap: 6px;
+    padding: 12px 5px;
+  }
+  .payment-options-grid .payment-option-button svg {
+    width: 18px; height: 18px;
+  }
+}
