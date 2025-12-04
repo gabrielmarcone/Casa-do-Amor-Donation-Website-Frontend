@@ -1,0 +1,45 @@
+<div class="dashboard-layout">
+  
+  <aside class="sidebar">
+    <div class="profile-section">
+      <input type="file" id="profile-upload" accept="image/*" style="display: none;">
+      
+      <div class="profile-pic-placeholder" id="btn-change-profile" title="Alterar foto">
+        <img id="profile-image" src="" alt="Foto de Perfil" class="profile-img-tag" style="display: none;">
+        
+        <svg id="default-profile-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="40" height="40">
+          <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd" />
+        </svg>
+      </div>
+      <span class="admin-name">Administrador Geral</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <button class="nav-item active" data-target="doacoes">
+        <img src="/doacao.png" alt="Doações" class="nav-icon">
+        Doações
+      </button>
+
+      <button class="nav-item" data-target="socios">
+        <img src="/socio.png" alt="Sócios" class="nav-icon">
+        Sócio-doadores
+      </button>
+
+      <button class="nav-item" data-target="voluntarios">
+        <img src="/voluntario.png" alt="Voluntários" class="nav-icon">
+        Voluntários
+      </button>
+    </nav>
+
+    <button class="logout-button" id="btn-logout">
+      <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+      </svg>
+      Sair
+    </button>
+  </aside>
+
+  <main class="main-content" id="content-area">
+    </main>
+
+</div>
