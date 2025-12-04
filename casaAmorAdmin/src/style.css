@@ -1,0 +1,318 @@
+/* src/style.css */
+
+/* --- RESET GERAL --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  background-color: #F1F1F1;
+  min-height: 100vh;
+}
+
+/* =========================================
+   1. ESTILOS DO MODO LOGIN
+   ========================================= */
+.login-mode {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  width: 100%;
+}
+
+.login-container {
+  background-color: #FFFFFF;
+  width: 600px;
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 50px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.login-header h1 { font-weight: 700; font-size: 30px; color: #262626; margin-bottom: 20px; }
+.login-logo { height: 90px; width: auto; margin-bottom: 25px; }
+.login-form { display: flex; flex-direction: column; gap: 15px; text-align: left; width: 100%; }
+.form-group { display: flex; flex-direction: column; gap: 6px; width: 100%; }
+.form-group label { font-size: 16px; font-weight: 700; color: #444; }
+.form-input { padding: 18px 20px; border: 2px solid #E0E0E0; border-radius: 8px; font-family: 'Open Sans', sans-serif; font-size: 16px; color: #333; outline: none; transition: all 0.2s ease; width: 100%; }
+.form-input:focus { border-color: #28539C; box-shadow: 0 0 0 4px rgba(40, 83, 156, 0.1); }
+.button-login { background-color: #28539C; color: #FFFFFF; font-size: 19px; font-weight: 700; border: none; border-radius: 8px; padding: 18px; cursor: pointer; margin-top: 30px; transition: background-color 0.2s; width: 100%; }
+.button-login:hover { background-color: #1e3f7a; }
+
+
+/* =========================================
+   2. ESTILOS DO DASHBOARD (SIDEBAR + LAYOUT)
+   ========================================= */
+
+.dashboard-layout {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* Sidebar Vermelha */
+.sidebar {
+  width: 280px;
+  background-color: #C9292F;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 30px 20px;
+  flex-shrink: 0;
+}
+
+/* Perfil */
+.profile-section {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+}
+
+.profile-pic-placeholder {
+  width: 50px;
+  height: 50px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  overflow: hidden;
+  border: 2px solid transparent;
+  transition: transform 0.2s;
+}
+
+.profile-pic-placeholder:hover { transform: scale(1.05); border-color: rgba(255,255,255,0.5); }
+.profile-img-tag { width: 100%; height: 100%; object-fit: cover; }
+.admin-name { font-weight: 600; font-size: 16px; line-height: 1.2; }
+
+/* Navegação */
+.sidebar-nav { display: flex; flex-direction: column; gap: 10px; flex-grow: 1; }
+.nav-item { display: flex; align-items: center; gap: 15px; padding: 15px; border: none; background: transparent; color: white; font-family: 'Open Sans', sans-serif; font-size: 16px; font-weight: 600; border-radius: 8px; cursor: pointer; text-align: left; transition: background-color 0.2s; width: 100%; }
+.nav-item:hover { background-color: rgba(255, 255, 255, 0.1); }
+.nav-item.active { background-color: #E96266; }
+.nav-icon { width: 24px; height: 24px; object-fit: contain; filter: brightness(0) invert(1); }
+
+/* Sair */
+.logout-button { display: flex; align-items: center; gap: 10px; margin-top: auto; padding: 15px; background-color: rgba(0, 0, 0, 0.1); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-family: 'Open Sans', sans-serif; transition: background-color 0.2s; }
+.logout-button:hover { background-color: rgba(0, 0, 0, 0.3); }
+
+/* Área Principal */
+.main-content { flex-grow: 1; padding: 50px; background-color: #F1F1F1; }
+
+
+/* =========================================
+   3. ESTILOS INTERNOS (BUSCA, CARDS E TABELA)
+      (Essa é a parte que faltava!)
+   ========================================= */
+
+/* --- Barra de Busca --- */
+.top-bar { margin-bottom: 30px; }
+
+.search-input {
+  width: 100%;
+  max-width: 600px;
+  padding: 15px 20px 15px 45px;
+  border-radius: 30px;
+  border: none;
+  background-color: #E0E0E0; /* Cinza do fundo da busca */
+  font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
+  color: #333;
+  outline: none;
+  /* Ícone de Lupa via SVG */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23777' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z' /%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: 15px center;
+  background-size: 20px;
+}
+
+/* --- Cards Vermelhos --- */
+.dashboard-cards {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.card-metric {
+  background-color: #E55B5F; /* Cor exata da imagem */
+  color: white;
+  padding: 25px 30px;
+  border-radius: 8px;
+  min-width: 250px;
+  flex: 1;
+  box-shadow: 0 4px 10px rgba(229, 91, 95, 0.3);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.card-number {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.card-label {
+  font-size: 18px;
+  font-weight: 400;
+  opacity: 0.9;
+}
+
+/* --- Tabela --- */
+.table-container {
+  overflow-x: auto;
+  background: white;
+  border-radius: 8px;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 800px;
+}
+
+.data-table thead {
+  background-color: #666666; /* Cabeçalho Cinza Escuro */
+  color: white;
+}
+
+.data-table th {
+  padding: 15px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  border-right: 1px solid #777;
+}
+
+.data-table th:last-child { border-right: none; }
+
+.data-table td {
+  padding: 15px;
+  text-align: center;
+  font-size: 14px;
+  color: #333;
+  border-bottom: 1px solid #EEE;
+  border-right: 1px solid #EEE;
+}
+
+.data-table tr:hover { background-color: #FAFAFA; }
+
+/* Paginação */
+.pagination {
+  text-align: right;
+  margin-top: 15px;
+  color: #555;
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* =========================================
+   4. MODAL DE DETALHES (Voluntários)
+   ========================================= */
+
+/* Fundo escuro atrás do modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+/* A caixa do modal em si */
+.modal-card {
+  background-color: #F5F5F5; /* Fundo cinza claro igual da imagem */
+  width: 600px;
+  max-width: 90%;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  position: relative;
+  font-family: 'Open Sans', sans-serif;
+}
+
+/* Botão de fechar (X) */
+.close-modal {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+  font-weight: bold;
+}
+
+.modal-title {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 25px;
+  color: #000;
+}
+
+/* Estilos do texto dentro do modal */
+.modal-info p {
+  margin-bottom: 12px;
+  font-size: 15px;
+  color: #333;
+  line-height: 1.5;
+}
+
+.modal-info strong {
+  font-weight: 700;
+  color: #000;
+}
+
+/* Área dos Botões de Ação */
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.btn-action {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  color: #000; /* Texto preto conforme imagem */
+  font-weight: 500;
+  transition: transform 0.1s;
+}
+
+.btn-action:hover { transform: scale(1.02); filter: brightness(0.95); }
+
+/* Cores específicas dos botões */
+.btn-analise { background-color: #FBCB78; } /* Laranja claro */
+.btn-aprovado { background-color: #B4D7A8; } /* Verde claro */
+.btn-rejeitado { background-color: #F6989D; } /* Vermelho claro */
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
