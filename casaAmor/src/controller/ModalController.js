@@ -1,24 +1,26 @@
 // Gerencia todo o fluxo do modal
-
-// /src/controller/ModalController.js
-// Gerencia todo o estado e lógica dos modais (Doação e Agradecimento).
+// INTEGRADO COM BACK-END JAVA (PIX E CARTÃO REAIS)
 
 import { DonationState } from '../model/DonationState.js';
 import * as Validation from '../model/ValidationService.js';
 import { ThankYouModalContent } from '../view/components/ThankYouModalContent.js';
 
-// --- Seletores de DOM (Globais do Modal) ---
+// --- Seletores de DOM ---
 let overlay, modalContainer, flowCard, allSteps, backButton, closeModalButton;
 let totalUnitariaDisplay, totalSocioDisplay;
 let thankYouOverlay, thankYouContainer, thankYouTitle, thankYouText1, thankYouText2, thankYouText3, thankYouButton;
-
 let stepHistory = [];
 
-/**
- * Seleciona todos os elementos do DOM necessários para os modais
- */
+// Cache de dados do usuário (Passo 2) para enviar ao backend
+let userData = {
+    nome: '',
+    sobrenome: '',
+    cpf: '',
+    telefone: '',
+    email: ''
+};
+
 function cacheSelectors() {
-  // Modal de Doação
   overlay = document.getElementById('donation-modal-overlay');
   modalContainer = document.getElementById('modal-container');
   flowCard = document.getElementById('modal-donation-flow');
@@ -28,7 +30,6 @@ function cacheSelectors() {
   totalUnitariaDisplay = document.getElementById('total-unitaria-display');
   totalSocioDisplay = document.getElementById('total-socio-display');
 
-  // Modal de Agradecimento
   thankYouOverlay = document.getElementById('thank-you-modal-overlay');
   thankYouContainer = document.getElementById('thank-you-modal-container');
   thankYouTitle = document.getElementById('thank-you-title');
@@ -38,18 +39,12 @@ function cacheSelectors() {
   thankYouButton = document.getElementById('thank-you-ok-button');
 }
 
-/**
- * Exibe o modal de doação
- */
 function showModal() {
   overlay.style.display = 'block';
   modalContainer.style.display = 'flex'; 
   document.body.classList.add('modal-open');
 }
 
-/**
- * Esconde o modal de doação
- */
 function hideModal() {
   if (overlay) overlay.style.display = 'none';
   if (modalContainer) modalContainer.style.display = 'none'; 
@@ -58,40 +53,26 @@ function hideModal() {
   showStep(null); 
 }
 
-/**
- * Exibe o modal de agradecimento
- * @param {string} type - 'unitaria', 'socio', ou 'voluntario'
- */
 function showThankYouModal(type) {
   const content = ThankYouModalContent[type];
   if (!content) return;
-
   thankYouTitle.innerText = content.title;
   thankYouText1.innerText = content.text1;
   thankYouText2.innerText = content.text2;
   thankYouText3.innerText = content.text3;
   thankYouButton.innerText = content.button;
-  
-  hideModal(); // Esconde o modal de doação (se estiver aberto)
-  
+  hideModal();
   thankYouOverlay.style.display = 'block';
   thankYouContainer.style.display = 'flex';
   document.body.classList.add('modal-open');
 }
 
-/**
- * Esconde o modal de agradecimento
- */
 function hideThankYouModal() {
   if (thankYouOverlay) thankYouOverlay.style.display = 'none';
   if (thankYouContainer) thankYouContainer.style.display = 'none';
   document.body.classList.remove('modal-open');
 }
 
-/**
- * Exibe um passo específico do fluxo de doação
- * @param {string | null} stepName - O valor de 'data-step' (ex: '1', '2', '3-unitaria')
- */
 function showStep(stepName) {
   if (!flowCard) return; 
   allSteps.forEach(step => step.style.display = 'none');
@@ -102,10 +83,6 @@ function showStep(stepName) {
   if (backButton) backButton.style.display = stepHistory.length > 0 ? 'block' : 'none';
 }
 
-/**
- * Navega para um novo passo, adicionando o atual ao histórico
- * @param {string} stepName - O 'data-step' do próximo passo
- */
 function navigateToStep(stepName) {
   const currentStepEl = flowCard.querySelector('.modal-step[style*="display: flex"]');
   if (currentStepEl) {
@@ -114,41 +91,25 @@ function navigateToStep(stepName) {
   showStep(stepName);
 }
 
-/**
- * Atualiza os displays de total no modal (passo 3)
- */
 function updateTotals() {
   const { amount } = DonationState.get();
   totalUnitariaDisplay.innerText = `R$ ${amount}`;
   totalSocioDisplay.innerText = `R$ ${amount}/mês`;
 }
 
-/**
- * Abre o modal de doação
- * @param {string} [type=null] - 'unitaria' ou 'socio' (se nulo, usa o valor do form)
- * @param {number} [startStep=1] - Passo inicial (1 ou 2)
- * @param {string} [formId=null] - ID do formulário para pegar os dados (ex: 'inline-donation-form')
- */
 function openModal(type = null, startStep = 1, formId = null) {
   stepHistory = [];
-  
-  // Se os dados vêm de um formulário externo (ex: 'inline-donation-form')
   if (startStep === 2 && formId) {
     DonationState.updateFromForm(formId);
   }
-  
   const modalForm = document.getElementById('modal-donation-form');
   const unitariaBtn = modalForm.querySelector('.option-button[data-value="unitaria"]');
   const socioBtn = modalForm.querySelector('.option-button[data-value="socio"]');
   
-  // Se um tipo foi forçado (ex: clique no link "Seja Sócio")
-  if (type) {
-    DonationState.setType(type);
-  }
+  if (type) DonationState.setType(type);
 
   const { type: currentType, amount: currentAmount } = DonationState.get();
 
-  // Sincroniza o formulário do modal (Passo 1) com o estado
   if (currentType === 'socio') {
     unitariaBtn.classList.remove('active');
     socioBtn.classList.add('active');
@@ -166,58 +127,97 @@ function openModal(type = null, startStep = 1, formId = null) {
   } else {
     showStep('1');
   }
-
-  // Re-valida os formulários do modal
   initModalFormValidation();
 }
 
-/**
- * Configura um formulário de doação (botões e input)
- * @param {string} formId - ID do elemento do formulário
- */
 function setupDonationForm(formId) {
   const form = document.getElementById(formId);
   if (!form) return;
-  
   const optionButtons = form.querySelectorAll('.option-button');
   const amountInput = form.querySelector('.amount-input');
 
   optionButtons.forEach(button => {
     button.addEventListener('click', () => {
       const group = button.dataset.group; 
-      
-      form.querySelectorAll(`.option-button[data-group="${group}"]`).forEach(btn => {
-        btn.classList.remove('active');
-      });
+      form.querySelectorAll(`.option-button[data-group="${group}"]`).forEach(btn => btn.classList.remove('active'));
       button.classList.add('active');
-
-      if (group === 'amount') {
-        if (amountInput) {
-          amountInput.value = button.dataset.value;
-        }
+      if (group === 'amount' && amountInput) {
+        amountInput.value = button.dataset.value;
       }
-      
-      // Atualiza o Model de Estado
       DonationState.updateFromForm(formId);
     });
   });
 
   if (amountInput) {
     amountInput.addEventListener('input', () => {
-      form.querySelectorAll(`.option-button[data-group="amount"]`).forEach(btn => {
-        btn.classList.remove('active');
-      });
-      // Atualiza o Model de Estado
+      form.querySelectorAll(`.option-button[data-group="amount"]`).forEach(btn => btn.classList.remove('active'));
       DonationState.updateFromForm(formId);
     });
   }
-  // Sincroniza o estado no carregamento inicial
   DonationState.updateFromForm(formId);
 }
 
-/**
- * Inicializa a lógica de abas (Pix, Boleto, Cartão) do Passo 3 Unitária
- */
+// --- INTEGRAÇÃO COM BACK-END (CHAMADA HTTP) ---
+
+async function createRealDonation(paymentMethod) {
+    const { amount } = DonationState.get();
+    
+    // Remove pontos (ex: 2.000 -> 2000) e substitui vírgula por ponto (caso exista)
+    const cleanAmount = parseFloat(amount.replace(/\./g, '').replace(',', '.'));
+
+    const payload = {
+        valor: cleanAmount,
+        descricao: "Doação para Casa do Amor",
+        metodoPagamento: paymentMethod, // "PIX", "credit_card"
+        nomeDoador: `${userData.nome} ${userData.sobrenome}`,
+        emailDoador: userData.email,
+        documentoNumero: userData.cpf.replace(/\D/g, ''),
+        documentoTipo: "CPF"
+    };
+
+    try {
+        const response = await fetch('http://localhost:8080/doacoes', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) throw new Error('Erro na API de doação');
+        return await response.json();
+
+    } catch (error) {
+        console.error("Erro ao criar doação:", error);
+        alert("Erro ao conectar com o servidor de pagamento. Verifique se o Back-end está rodando.");
+        return null;
+    }
+}
+
+// --- AUXILIAR: Carrega Pix se a aba estiver ativa (Correção do Carregamento Automático) ---
+async function loadPixIfActive() {
+    const pixBlock = document.getElementById('payment-content-pix');
+    // Verifica se a aba Pix está visível/ativa e se estamos no passo 3-unitaria
+    if (pixBlock && pixBlock.classList.contains('active')) {
+        const pixQrContainer = pixBlock.querySelector('.mock-qr-code');
+        const pixCopyInput = document.getElementById('pix-code-input');
+
+        // Mostra carregando imediatamente
+        pixQrContainer.innerHTML = '<div style="padding:40px; text-align:center; color:#666;">Gerando QR Code Pix...<br><small>Aguarde...</small></div>';
+        pixCopyInput.value = 'Gerando código...';
+
+        const donationData = await createRealDonation('PIX');
+
+        if (donationData && donationData.qrCodeImg) {
+            pixQrContainer.innerHTML = `<img src="data:image/png;base64,${donationData.qrCodeImg}" alt="QR Code Pix" style="width: 100%; height: 100%; object-fit: contain;">`;
+            pixCopyInput.value = donationData.qrCode;
+        } else {
+            pixQrContainer.innerHTML = '<p style="color:red; text-align:center;">Erro ao gerar Pix.</p>';
+            pixCopyInput.value = '';
+        }
+    }
+}
+
+// --- Lógica de Abas do Passo 3 ---
+
 function initUnitaryPaymentTabs() {
   const step = document.querySelector('.modal-step[data-step="3-unitaria"]');
   if (!step) return;
@@ -226,49 +226,47 @@ function initUnitaryPaymentTabs() {
   const paymentBlocks = step.querySelectorAll('.payment-content-block');
 
   paymentButtons.forEach(button => {
-    button.addEventListener('click', () => {
+    button.addEventListener('click', async () => {
+      // 1. Alterna visualmente as abas
       paymentButtons.forEach(btn => btn.classList.remove('active'));
       button.classList.add('active');
       
-      const targetId = button.dataset.target;
+      const targetId = button.dataset.target; // 'pix', 'boleto', 'cartao'
+      
       paymentBlocks.forEach(block => {
         block.classList.toggle('active', block.id === `payment-content-${targetId}`);
       });
+
+      // 2. Se clicou no Pix, chama a função de carregar (Reuso da função)
+      if (targetId === 'pix') {
+          loadPixIfActive();
+      }
       
-      // Re-valida o formulário de cartão se ele for ativado
       initUnitaryCardValidation();
     });
   });
 }
 
-/**
- * Função de copiar para clipboard
- */
 function copyToClipboard(inputId, buttonId) {
   const input = document.getElementById(inputId);
   const button = document.getElementById(buttonId);
   if (!input || !button) return;
+  
+  if(!input.value || input.value === 'Aguarde...' || input.value === 'Gerando código...') return;
 
   input.select(); 
   input.setSelectionRange(0, 99999); 
-
   try {
     document.execCommand('copy');
     const originalText = button.innerText; 
     button.innerText = 'Copiado!'; 
-    
-    setTimeout(() => {
-      button.innerText = originalText;
-    }, 2000);
-    
-    return true; // Sucesso
+    setTimeout(() => { button.innerText = originalText; }, 2000);
+    return true; 
   } catch (err) {
     console.error('Falha ao copiar: ', err);
-    return false; // Falha
+    return false;
   }
 }
-
-// --- Funções de Validação Específicas do Modal ---
 
 function initStep2Validation() {
   const step2Form = document.getElementById('step-2-form');
@@ -279,37 +277,32 @@ function initStep2Validation() {
   
   function validate() { Validation.validateForm(step2Inputs, step2Button); }
   
-  // Máscaras
   document.getElementById('modal-cpf')?.addEventListener('input', (e) => e.target.value = Validation.maskCPF(e.target.value));
   document.getElementById('modal-telefone')?.addEventListener('input', (e) => e.target.value = Validation.maskTelefone(e.target.value));
   
   step2Inputs.forEach(input => input.addEventListener('input', validate));
-  validate(); // Estado inicial
+  validate(); 
 }
 
 function initSocioCardValidation() {
   const socioForm = document.getElementById('step-3-socio-form');
   if (!socioForm) return;
-
   const socioInputs = socioForm.querySelectorAll('#socio-card-numero, #socio-card-vencimento, #socio-card-cvv');
   const socioButton = socioForm.querySelector('.button-primary-gradient');
-  
   function validate() { Validation.validateForm(socioInputs, socioButton); }
-
-  // Máscaras
   document.getElementById('socio-card-numero')?.addEventListener('input', (e) => e.target.value = Validation.maskCardNumber(e.target.value));
   document.getElementById('socio-card-vencimento')?.addEventListener('input', (e) => e.target.value = Validation.maskExpiry(e.target.value));
   document.getElementById('socio-card-cvv')?.addEventListener('input', (e) => e.target.value = Validation.maskCVV(e.target.value));
-  
   socioButton.addEventListener('click', (e) => {
     e.preventDefault();
     if (socioButton.disabled) return;
     showThankYouModal('socio');
   });
-
   socioInputs.forEach(input => input.addEventListener('input', validate));
-  validate(); // Estado inicial
+  validate();
 }
+
+// --- INTEGRADA CARTÃO ---
 
 function initUnitaryCardValidation() {
   const unitariaForm = document.getElementById('step-3-unitaria-form');
@@ -321,66 +314,63 @@ function initUnitaryCardValidation() {
   function validate() {
     const activeTab = unitariaForm.querySelector('.payment-option-button.active');
     if (!activeTab || activeTab.dataset.target !== 'cartao') {
-      unitariaButton.disabled = true; // Desabilita se não for a aba de cartão
+      unitariaButton.disabled = true;
       return;
     }
     Validation.validateForm(cartaoInputs, unitariaButton);
   }
   
-  // Máscaras
   document.getElementById('unitaria-card-numero')?.addEventListener('input', (e) => e.target.value = Validation.maskCardNumber(e.target.value));
   document.getElementById('unitaria-card-vencimento')?.addEventListener('input', (e) => e.target.value = Validation.maskExpiry(e.target.value));
   document.getElementById('unitaria-card-cvv')?.addEventListener('input', (e) => e.target.value = Validation.maskCVV(e.target.value));
 
-  unitariaButton.addEventListener('click', (e) => {
+  // ENVIO DO CARTÃO
+  unitariaButton.addEventListener('click', async (e) => {
     e.preventDefault();
     if (unitariaButton.disabled) return;
-    showThankYouModal('unitaria');
+
+    // Feedback visual
+    const originalText = unitariaButton.innerText;
+    unitariaButton.innerText = "Processando...";
+    unitariaButton.disabled = true;
+
+    // Chama o Back-end
+    const result = await createRealDonation('credit_card');
+
+    if (result) {
+        showThankYouModal('unitaria');
+    } else {
+        alert("Erro ao processar pagamento com cartão.");
+    }
+
+    // Restaura botão
+    unitariaButton.innerText = originalText;
+    unitariaButton.disabled = false;
   });
   
   cartaoInputs.forEach(input => input.addEventListener('input', validate));
-  validate(); // Estado inicial
+  validate(); 
 }
 
-/**
- * Roda todas as funções de validação dos formulários do modal
- */
 function initModalFormValidation() {
   initStep2Validation();
   initSocioCardValidation();
   initUnitaryCardValidation();
 }
 
-/**
- * Anexa todos os ouvintes de eventos globais e internos do modal
- */
 function initEventListeners() {
-  // --- Gatilhos Globais (Header, Footer, etc.) ---
-  
-  // Unitária (Passo 1)
-  const standardModalTriggers = [
-    'trigger-modal-step1', // Header
-    'trigger-modal-small', // Seção 2 (Quem Somos)
-    'trigger-modal-cta', // Seção CTA
-    'trigger-modal-features', // Seção Features
-    'trigger-modal-footer' // Footer
-  ];
+  const standardModalTriggers = ['trigger-modal-step1', 'trigger-modal-small', 'trigger-modal-cta', 'trigger-modal-features', 'trigger-modal-footer'];
   standardModalTriggers.forEach(id => {
     const el = document.getElementById(id);
     if (el) el.addEventListener('click', (e) => { e.preventDefault(); openModal('unitaria', 1); });
   });
 
-  // Sócio (Passo 1)
-  const socioModalTriggers = [
-    'trigger-modal-socio-nav', // Header
-    'trigger-modal-socio-cta' // Seção "Como Ajudar"
-  ];
+  const socioModalTriggers = ['trigger-modal-socio-nav', 'trigger-modal-socio-cta'];
   socioModalTriggers.forEach(id => {
     const el = document.getElementById(id);
     if (el) el.addEventListener('click', (e) => { e.preventDefault(); openModal('socio', 1); });
   });
 
-  // --- Controles de Fechar/Voltar (Modal Doação) ---
   if (closeModalButton) closeModalButton.addEventListener('click', hideModal);
   if (overlay) overlay.addEventListener('click', hideModal);
   if (backButton) backButton.addEventListener('click', (e) => {
@@ -391,11 +381,10 @@ function initEventListeners() {
     }
   });
 
-  // --- Controles de Fechar (Modal Agradecimento) ---
   if (thankYouButton) thankYouButton.addEventListener('click', hideThankYouModal);
   if (thankYouOverlay) thankYouOverlay.addEventListener('click', hideThankYouModal);
 
-  // --- Controles de Navegação Interna (Modal Doação) ---
+  // --- NAVEGAÇÃO INTERNA COM CAPTURA DE DADOS ---
   
   // Passo 1 -> Passo 2
   document.getElementById('modal-goto-step2')?.addEventListener('click', (e) => {
@@ -405,24 +394,32 @@ function initEventListeners() {
     navigateToStep('2');
   });
   
-  // Passo 2 -> Passo 3
+  // Passo 2 -> Passo 3 (CAPTURA DADOS E CARREGA PIX SE NECESSÁRIO)
   document.getElementById('modal-goto-step3')?.addEventListener('click', (e) => {
     e.preventDefault();
     if (document.getElementById('modal-goto-step3').disabled) return;
     
+    // Salva os dados do formulário do Passo 2 na variável global
+    userData.nome = document.getElementById('modal-nome').value;
+    userData.sobrenome = document.getElementById('modal-sobrenome').value;
+    userData.cpf = document.getElementById('modal-cpf').value;
+    userData.telefone = document.getElementById('modal-telefone').value;
+    userData.email = document.getElementById('modal-email').value;
+
     const { type } = DonationState.get();
     navigateToStep(type === 'unitaria' ? '3-unitaria' : '3-socio');
+
+    // CORREÇÃO: Se for doação unitária, verifica se precisa carregar o Pix imediatamente
+    if (type === 'unitaria') {
+        loadPixIfActive();
+    }
   });
 
-  // --- Controles Específicos (Passo 3) ---
-  
-  // Abas de Pagamento (Pix/Boleto/Cartão)
   initUnitaryPaymentTabs();
   
-  // Botões de Copiar
   document.getElementById('copy-pix-button')?.addEventListener('click', () => {
     if (copyToClipboard('pix-code-input', 'copy-pix-button')) {
-      showThankYouModal('unitaria');
+      // showThankYouModal('unitaria'); 
     }
   });
 
@@ -433,28 +430,15 @@ function initEventListeners() {
   });
 }
 
-
 export const ModalController = {
-  /**
-   * Inicializa o controlador do modal. 
-   * Deve ser chamado uma vez quando o app carregar (no main.js).
-   */
   initGlobal: () => {
     cacheSelectors();
     initEventListeners();
-    setupDonationForm('modal-donation-form'); // Configura o form do passo 1
-    initModalFormValidation(); // Configura as validações dos passos 2 e 3
-    hideModal(); // Garante que tudo comece escondido
+    setupDonationForm('modal-donation-form'); 
+    initModalFormValidation(); 
+    hideModal(); 
     hideThankYouModal();
   },
-
-  /**
-   * Abre o modal de doação (usado por controllers externos)
-   */
   openModal: openModal,
-
-  /**
-   * Exibe o modal de agradecimento (usado por controllers externos)
-   */
   showThankYouModal: showThankYouModal
 };

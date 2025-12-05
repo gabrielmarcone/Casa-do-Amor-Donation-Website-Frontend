@@ -5,43 +5,19 @@ import dashboardScreenHtml from './view/DashboardScreen.html?raw';
 const app = document.querySelector('#app');
 
 // ============================================================
-// 1. BANCO DE DADOS (Mantive seus dados + Novos campos Voluntários)
+// 1. BANCO DE DADOS MOCK (APENAS SÓCIOS AINDA É MOCK)
 // ============================================================
 
 const DB = {
-  doacoes: [
-    { id: 1, data: '11/11/2025 20:30', nome: 'Maria Silva', email: 'maria@gmail.com', valor: 100.00, tipo: 'Única', status: 'Aprovada', metodo: 'Boleto' },
-    { id: 2, data: '11/11/2025 18:15', nome: 'João Souza', email: 'joao@outlook.com', valor: 50.00, tipo: 'Recorrente', status: 'Falha', metodo: 'Cartão' },
-    { id: 3, data: '10/11/2025 09:12', nome: 'Pedro Costa', email: 'pedro@uol.com.br', valor: 200.00, tipo: 'Única', status: 'Pendente', metodo: 'PIX' },
-    { id: 4, data: '09/11/2025 14:00', nome: 'Ana Clara', email: 'ana@test.com', valor: 1200.00, tipo: 'Única', status: 'Aprovada', metodo: 'PIX' },
-  ],
   socios: [
     { id: 1, nome: 'Maria Silva', email: 'maria@gmail.com', valor: 100.00, status: 'Ativa', inicio: '11/11/2025' },
     { id: 2, nome: 'João Souza', email: 'joao@outlook.com', valor: 50.00, status: 'Inadimplente', inicio: '08/02/2025' },
     { id: 3, nome: 'Pedro Costa', email: 'pedro@uol.com.br', valor: 200.00, status: 'Cancelada', inicio: '25/03/2025' },
-  ],
-  // AQUI EU ADICIONEI OS DADOS NOVOS PARA O MODAL FUNCIONAR
-  voluntarios: [
-    { 
-      id: 1, data: '10/11/2025', nome: 'Ana Beatriz Lima', email: 'ana.lima@email.com', telefone: '(77) 99999-8888',
-      area: 'Saúde', especialidade: 'Nutricionista', status: 'Em análise',
-      disponibilidade: 'Tenho disponibilidade total nas terças-feiras (manhã e tarde).'
-    },
-    { 
-      id: 2, data: '11/11/2025', nome: 'Ricardo Mendes', email: 'ricardo@email.com', telefone: '(77) 98888-7777',
-      area: 'Administrativo', especialidade: 'Gestão', status: 'Em análise',
-      disponibilidade: 'Posso ajudar aos sábados pela manhã.'
-    },
-    { 
-      id: 3, data: '10/11/2025', nome: 'Juliana Paes', email: 'ju.paes@email.com', telefone: '(11) 91234-5678',
-      area: 'Eventos', especialidade: 'Decoração', status: 'Aprovado',
-      disponibilidade: 'Disponível para eventos pontuais.'
-    },
   ]
 };
 
 // ============================================================
-// 2. SISTEMA DE LOGIN (Intacto)
+// 2. SISTEMA DE LOGIN (MOCK)
 // ============================================================
 
 const MOCK_USER = { email: 'admin@casadoamor.com', password: '123' };
@@ -66,7 +42,7 @@ function renderLogin() {
 }
 
 // ============================================================
-// 3. SISTEMA DO DASHBOARD (Intacto)
+// 3. SISTEMA DO DASHBOARD
 // ============================================================
 
 function renderDashboard() {
@@ -114,23 +90,21 @@ function setupSidebar() {
 }
 
 // ============================================================
-// 4. LÓGICA DE CONTEÚDO (Restaurei sua lógica antiga aqui)
+// 4. LÓGICA DE CONTEÚDO (INTEGRAÇÃO TOTAL)
 // ============================================================
 
-let currentScreen = ''; 
+let voluntariosCache = [];
 
-function loadContent(screenName) {
-  currentScreen = screenName;
+async function loadContent(screenName) {
   const contentArea = document.getElementById('content-area');
   
-  // -- RESTAUREI SEUS IFs DE COLUNAS E LABELS --
   let columns = [];
   let card1Label = '', card2Label = '';
   
   if (screenName === 'doacoes') {
-    columns = ['Data/Hora', 'Doador (Nome/Email)', 'Valor', 'Tipo', 'Status', 'Método'];
-    card1Label = 'doações recebidas';
-    card2Label = 'arrecadado';
+    columns = ['Data/Hora', 'Doador (Nome/Email)', 'Valor', 'Status', 'ID Pagamento'];
+    card1Label = 'doações registradas';
+    card2Label = 'total arrecadado';
   } else if (screenName === 'socios') {
     columns = ['Doador (Nome/Email)', 'Valor Mensal', 'Status da Assinatura', 'Data de Início', 'Ações'];
     card1Label = 'sócios ativos';
@@ -143,7 +117,7 @@ function loadContent(screenName) {
 
   contentArea.innerHTML = `
     <div class="top-bar">
-      <input type="text" id="global-search" class="search-input" placeholder="Buscar por nome, email, telefone ou CPF">
+      <input type="text" id="global-search" class="search-input" placeholder="Buscar por nome ou email">
     </div>
 
     <div class="dashboard-cards">
@@ -165,13 +139,14 @@ function loadContent(screenName) {
           </tr>
         </thead>
         <tbody id="table-body">
-          </tbody>
+          <tr><td colspan="6" style="padding: 20px;">Carregando dados...</td></tr>
+        </tbody>
       </table>
     </div>
     <div class="pagination">Próxima >></div>
   `;
 
-  updateScreenData(screenName);
+  await updateScreenData(screenName);
 
   document.getElementById('global-search').addEventListener('input', (e) => {
     const term = e.target.value.toLowerCase();
@@ -179,13 +154,63 @@ function loadContent(screenName) {
   });
 }
 
-function updateScreenData(screenName, searchTerm = '') {
+async function updateScreenData(screenName, searchTerm = '') {
   const tableBody = document.getElementById('table-body');
   const metric1 = document.getElementById('metric-1');
   const metric2 = document.getElementById('metric-2');
   
-  let data = DB[screenName] || [];
+  let data = [];
+
+  try {
+    // --- INTEGRAÇÃO VOLUNTÁRIOS ---
+    if (screenName === 'voluntarios') {
+        const response = await fetch('http://localhost:8080/voluntarios/admin/lista');
+        const rawData = await response.json();
+        
+        voluntariosCache = rawData.map(v => {
+            const areaObj = (v.areasDeAtuacao && v.areasDeAtuacao.length > 0) ? v.areasDeAtuacao[0] : null;
+            return {
+                id: v.idUsuario,
+                data: formatarData(v.dataInscricao),
+                nome: v.nome,
+                email: v.email,
+                telefone: v.telefone,
+                area: areaObj ? areaObj.areaAtuacao.nome : '-',
+                especialidade: areaObj ? areaObj.especialidade : '-',
+                status: v.statusInscricao,
+                disponibilidade: areaObj ? areaObj.disponibilidade : 'Não informada'
+            };
+        });
+        data = voluntariosCache;
+    } 
+    // --- INTEGRAÇÃO DOAÇÕES ---
+    else if (screenName === 'doacoes') {
+        const response = await fetch('http://localhost:8080/doacoes');
+        const rawData = await response.json();
+
+        data = rawData.map(d => ({
+            id: d.id,
+            data: d.criadoEm ? new Date(d.criadoEm).toLocaleString('pt-BR') : '-',
+            nome: d.nomeDoador,
+            email: d.emailDoador,
+            valor: d.valor,
+            status: d.statusDoacao,
+            pagamentoId: d.pagamentoId || '-',
+            metodo: 'Pix/Cartão'
+        }));
+    }
+    // --- MOCK SÓCIOS ---
+    else if (screenName === 'socios') {
+        data = DB[screenName] || [];
+    }
+
+  } catch (error) {
+      console.error("Erro ao buscar dados:", error);
+      tableBody.innerHTML = `<tr><td colspan="6" style="color: red; padding: 20px;">Erro de conexão com o servidor.</td></tr>`;
+      return; 
+  }
   
+  // FILTRAGEM
   if (searchTerm) {
     data = data.filter(item => 
       item.nome.toLowerCase().includes(searchTerm) || 
@@ -193,6 +218,7 @@ function updateScreenData(screenName, searchTerm = '') {
     );
   }
 
+  // RENDERIZAÇÃO
   tableBody.innerHTML = '';
   
   if (data.length === 0) {
@@ -202,61 +228,62 @@ function updateScreenData(screenName, searchTerm = '') {
       let rowHTML = '';
       const tr = document.createElement('tr');
 
-      // -- RESTAUREI A LÓGICA DE CRIAÇÃO DAS LINHAS --
-      
       if (screenName === 'doacoes') {
+        // Cores para status da doação
+        const statusColor = item.status === 'PAID' ? 'green' : (item.status === 'PENDING' ? 'orange' : 'red');
+        
         rowHTML = `
           <td>${item.data}</td>
           <td>${item.nome}<br><span style="font-size:12px; color:#888;">${item.email}</span></td>
-          <td>R$ ${item.valor.toFixed(2).replace('.', ',')}</td>
-          <td>${item.tipo}</td>
-          <td>${item.status}</td>
-          <td>${item.metodo}</td>
+          <td>${item.valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+          <td><span style="color:${statusColor}; font-weight:bold;">${item.status}</span></td>
+          <td>${item.pagamentoId}</td>
         `;
         tr.innerHTML = rowHTML;
 
       } else if (screenName === 'socios') {
+        const isCancelled = item.status === 'Cancelada';
+        const btnDisabled = isCancelled ? 'disabled' : '';
+        const btnText = isCancelled ? 'Cancelado' : 'Cancelar';
+
         rowHTML = `
           <td>${item.nome}<br><span style="font-size:12px; color:#888;">${item.email}</span></td>
-          <td>R$ ${item.valor.toFixed(2).replace('.', ',')}</td>
+          <td>${item.valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
           <td>${item.status}</td>
           <td>${item.inicio}</td>
-          <td>...</td>
+          <td>
+            <button class="btn-cancel-donation" id="btn-cancel-${item.id}" ${btnDisabled}>
+              ${btnText}
+            </button>
+          </td>
         `;
         tr.innerHTML = rowHTML;
 
-      } else if (screenName === 'voluntarios') {
-        // --- AQUI ESTÁ A ÚNICA MUDANÇA: CLIQUE PARA ABRIR O MODAL ---
-        tr.style.cursor = "pointer"; // Mãozinha ao passar o mouse
-        
-        // Classes CSS para colorir o status (igual na imagem)
-        let badgeClass = '';
-        if(item.status === 'Aprovado') badgeClass = 'status-aprovado'; // Você precisa ter esse CSS ou usar style direto
-        else if(item.status === 'Rejeitado') badgeClass = 'status-rejeitado';
-        else badgeClass = 'status-analise';
+        // Só adiciona o clique se NÃO estiver cancelado
+        if (!isCancelled) {
+          setTimeout(() => {
+            const btn = tr.querySelector(`#btn-cancel-${item.id}`);
+            if (btn) btn.addEventListener('click', () => cancelSocio(item.id));
+          }, 0);
+        }
 
-        // Estilo inline apenas para garantir cores caso falte no CSS
-        const colors = {
-          'Aprovado': '#B4D7A8',
-          'Rejeitado': '#F6989D',
-          'Em análise': '#FBCB78'
-        };
-        const bg = colors[item.status] || '#eee';
+      } else if (screenName === 'voluntarios') {
+        tr.style.cursor = "pointer"; 
+        const statusConfig = getStatusConfig(item.status);
+        const dataFormatada = formatarData(item.data); // Usa a data já formatada se vier do objeto
 
         rowHTML = `
-          <td>${item.data}</td>
+          <td>${dataFormatada}</td>
           <td>${item.nome}</td>
           <td>${item.area}</td>
           <td>${item.especialidade}</td>
           <td>
-            <span style="background-color: ${bg}; padding: 5px 10px; border-radius: 12px; color: black; font-weight: 600;">
-              ${item.status}
+            <span style="background-color: ${statusConfig.bg}; padding: 5px 10px; border-radius: 12px; color: black; font-weight: 600;">
+              ${statusConfig.label}
             </span>
           </td>
         `;
         tr.innerHTML = rowHTML;
-        
-        // EVENTO DE CLIQUE NO VOLUNTÁRIO
         tr.addEventListener('click', () => openVolunteerModal(item));
       }
       
@@ -264,7 +291,7 @@ function updateScreenData(screenName, searchTerm = '') {
     });
   }
 
-  // -- RESTAUREI SEUS CÁLCULOS (MÉTRICAS) --
+  // CÁLCULO DE MÉTRICAS
   if (screenName === 'doacoes') {
     metric1.innerText = data.length; 
     const total = data.reduce((acc, cur) => acc + cur.valor, 0);
@@ -278,18 +305,43 @@ function updateScreenData(screenName, searchTerm = '') {
   
   } else if (screenName === 'voluntarios') {
     metric1.innerText = data.length;
-    const novos = data.filter(d => d.status === 'Novo' || d.status === 'Em análise').length;
-    metric2.innerText = novos + ' novas inscrições';
+    const novos = data.filter(d => d.status === 'PENDENTE_ANALISE').length;
+    metric2.innerText = novos + ' em análise';
   }
 }
 
+// --- Funções Auxiliares ---
+
+function getStatusConfig(statusJava) {
+    switch (statusJava) {
+        case 'APROVADA': return { label: 'Aprovado', bg: '#B4D7A8' };
+        case 'REJEITADA': return { label: 'Rejeitado', bg: '#F6989D' };
+        case 'PENDENTE_ANALISE': return { label: 'Em análise', bg: '#FBCB78' };
+        default: return { label: statusJava, bg: '#EEE' };
+    }
+}
+
+function formatarData(dataString) {
+    if (!dataString) return '-';
+    // Se vier YYYY-MM-DD
+    if (dataString.includes('-')) {
+        const partes = dataString.split('-');
+        if (partes.length === 3) {
+            return `${partes[2]}/${partes[1]}/${partes[0]}`;
+        }
+    }
+    return dataString;
+}
+
 // ============================================================
-// 5. NOVA FUNCIONALIDADE: MODAL DE VOLUNTÁRIOS
+// 5. MODAL DE VOLUNTÁRIOS
 // ============================================================
 
 function openVolunteerModal(volunteer) {
   const oldModal = document.getElementById('volunteer-modal');
   if (oldModal) oldModal.remove();
+
+  const statusConfig = getStatusConfig(volunteer.status);
 
   const modalHtml = `
     <div class="modal-overlay" id="volunteer-modal">
@@ -302,7 +354,8 @@ function openVolunteerModal(volunteer) {
           <p><strong>Área:</strong> ${volunteer.area}</p>
           <p><strong>Especialidade:</strong> ${volunteer.especialidade}</p>
           <p><strong>Data da Inscrição:</strong> ${volunteer.data}</p>
-          <p><strong>Disponibilidade:</strong> ${volunteer.disponibilidade || 'Não informada'}</p>
+          <p><strong>Status Atual:</strong> ${statusConfig.label}</p>
+          <p><strong>Disponibilidade:</strong> ${volunteer.disponibilidade}</p>
         </div>
         <div class="modal-actions">
           <button class="btn-action btn-analise" id="btn-status-analise">Em análise</button>
@@ -319,18 +372,28 @@ function openVolunteerModal(volunteer) {
   document.getElementById('close-btn').addEventListener('click', () => modal.remove());
   modal.addEventListener('click', (e) => { if (e.target === modal) modal.remove(); });
 
-  document.getElementById('btn-status-analise').addEventListener('click', () => updateStatus(volunteer.id, 'Em análise'));
-  document.getElementById('btn-status-aprovado').addEventListener('click', () => updateStatus(volunteer.id, 'Aprovado'));
-  document.getElementById('btn-status-rejeitado').addEventListener('click', () => updateStatus(volunteer.id, 'Rejeitado'));
+  document.getElementById('btn-status-analise').addEventListener('click', () => updateStatus(volunteer.id, 'PENDENTE_ANALISE'));
+  document.getElementById('btn-status-aprovado').addEventListener('click', () => updateStatus(volunteer.id, 'APROVADA'));
+  document.getElementById('btn-status-rejeitado').addEventListener('click', () => updateStatus(volunteer.id, 'REJEITADA'));
 }
 
 function updateStatus(id, newStatus) {
-  const vol = DB.voluntarios.find(v => v.id === id);
+  const vol = voluntariosCache.find(v => v.id === id);
   if (vol) {
     vol.status = newStatus;
     const modal = document.getElementById('volunteer-modal');
     if (modal) modal.remove();
     updateScreenData('voluntarios', document.getElementById('global-search').value);
+  }
+}
+
+function cancelSocio(id) {
+  if(confirm('Tem certeza que deseja cancelar a recorrência deste sócio?')) {
+    const socio = DB.socios.find(s => s.id === id);
+    if(socio) {
+      socio.status = 'Cancelada'; 
+      updateScreenData('socios', document.getElementById('global-search').value);
+    }
   }
 }
 

@@ -316,3 +316,30 @@ body {
   from { opacity: 0; }
   to { opacity: 1; }
 }
+
+/* Botão de Cancelar (Tabela de Sócios) */
+.btn-cancel-donation {
+  background-color: transparent;
+  border: 1px solid #C9292F; /* Vermelho da identidade visual */
+  color: #C9292F;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.btn-cancel-donation:hover {
+  background-color: #C9292F;
+  color: white;
+}
+
+/* Estilo para quando já estiver cancelado (botão cinza) */
+.btn-cancel-donation:disabled {
+  border-color: #ccc;
+  color: #999;
+  cursor: not-allowed;
+  background-color: transparent;
+}
