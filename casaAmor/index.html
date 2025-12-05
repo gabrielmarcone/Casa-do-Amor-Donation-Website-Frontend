@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="pt-br"> 
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <title>Casa do Amor</title> 
+    
+    </head>
+ <body>
+
+  <header class="app-bar">
+    <a href="/" class="logo">
+      <img src="/logo.png" alt="Logo Casa do Amor">
+    </a>
+
+    <nav class="main-nav">
+      <ul>
+        <li><a href="#page-quem-somos" class="nav-link active" data-page="page-quem-somos">Quem Somos</a></li>
+        <li><a href="#page-seja-socio" class="nav-link" id="trigger-modal-socio-nav">Seja Sócio</a></li>
+        <li><a href="#page-voluntariado" class="nav-link" data-page="page-voluntariado">Voluntariado</a></li>
+      </ul>
+    </nav>
+
+    <a href="#" class="button-donate" id="trigger-modal-step1">
+      DOE AGORA
+    </a>
+  </header>
+
+  <main id="app-root"></main>
+
+  <footer class="site-footer">
+    <div class="footer-container">
+      
+      <div class="footer-column footer-logo-column">
+        <img src="/logo.png" alt="Logo Casa do Amor" class="footer-logo">
+      </div>
+
+      <div class="footer-column">
+        <h4>Casa de Acolhimento ao Paciente Oncológico do Sudoeste da Bahia</h4>
+        <p>CNPJ: 10.241.191/0001-37</p>
+        <p>Endereço: Rua O, 30 - Boa Vista, Vitória da Conquista - BA, 45055-315</p>
+        <p>Telefone: (77) 3421-9660</p>
+        <p>Email: contato@casadoamorvdc.com</p>
+        
+        <div class="footer-copyright-wrapper">
+          <p>© 2025 Casa do Amor. Todos os direitos reservados.</p>
+          <p>Desenvolvido por estudantes de Ciência da Computação da UESB</p>
+        </div>
+      </div>
+
+      <div class="footer-column">
+        <h4>Navegue pelo site</h4>
+        <ul>
+          <li><a href="#page-quem-somos" class="nav-link" data-page="page-quem-somos">Início</a></li>
+          <li><a href="#" id="scroll-to-story-footer">Nossa história</a></li>
+          <li><a href="#page-voluntariado" class="nav-link" data-page="page-voluntariado">Seja um voluntário</a></li>
+        </ul>
+        <p class="footer-alert">
+          Para alterar ou cancelar sua doação recorrente, envie um e-mail para: contato@casadoamorvdc.com
+        </p>
+      </div>
+
+      <div class="footer-column footer-social-column">
+        <h4>Redes sociais</h4>
+        <a href="#" class="social-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm3 8h-1.35c-.538 0-.65.221-.65.778v1.222h2l-.209 2h-1.791v7h-3v-7h-2v-2h2v-1.634c0-1.923 1.01-3.366 3.018-3.366h1.982v3z"></path></svg>
+          <span>Casa do Amor</span>
+        </a>
+        <a href="#" class="social-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm0 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0 8c-1.656 0-3-1.344-3-3s1.344-3 3-3 3 1.344 3 3-1.344 3-3 3zm5.8-6.5c-.496 0-.9.404-.9.9s.404.9.9.9.9-.404.9-.9-.404-.9-.9-.9z"></path></svg>
+          <span>@casadoamorvca</span>
+        </a>
+        
+        <a href="#" class="button-primary-gradient footer-donate-button" id="trigger-modal-footer">
+          Faça uma doação
+        </a>
+      </div>
+
+    </div>
+  </footer>
+
+  <div id="donation-modal-overlay"></div>
+  <div id="modal-container">
+    <div id="modal-info-card">
+      <img src="/paisagem.png" alt="Paisagem da Casa do Amor" class="modal-image">
+      <div class="modal-left-content">
+        <img src="/logo.png" alt="Logo" class="modal-logo">
+        <p>
+          Os custos com moradia, alimentação e transporte não deveriam ser uma preocupação para quem enfrenta um tratamento de câncer. Com a sua ajuda, a Casa do Amor oferece o abrigo e o suporte necessários para que o paciente e sua família possam focar apenas na recuperação.
+        </p>
+        <p>
+          <b>Faça um gesto de amor. Doe agora e ajude a manter esse acolhimento.</b>
+        </p>
+      </div>
+    </div>
+    <div id="modal-donation-flow">
+      <button class="modal-close-button" id="modal-close-button" aria-label="Fechar modal">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+      <button class="modal-back-button" id="modal-back-button" aria-label="Voltar">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      
+      <div class="modal-step" data-step="1">
+        <div class="modal-step-header">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#1E8E3E" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          <span>Doação segura</span>
+        </div>
+        <div class="donation-options" id="modal-donation-form">
+          <div class="option-group">
+            <button class="option-button active" data-group="type" data-value="unitaria">Unitária</button>
+            <button class="option-button" data-group="type" data-value="socio">Sócio doador</button>
+          </div>
+          <div class="option-grid">
+            <button class="option-button active" data-group="amount" data-value="2.000">R$ 2.000</button>
+            <button class="option-button" data-group="amount" data-value="1.000">R$ 1.000</button>
+            <button class="option-button" data-group="amount" data-value="500">R$ 500</button>
+            <button class="option-button" data-group="amount" data-value="100">R$ 100</button>
+            <button class="option-button" data-group="amount" data-value="50">R$ 50</button>
+            <button class="option-button" data-group="amount" data-value="10">R$ 10</button>
+          </div>
+          <div class="amount-input-wrapper">
+            <span>R$</span>
+            <input type="text" class="amount-input" value="2.000">
+          </div>
+          <button class="button-submit-donate" id="modal-goto-step2">Doar e apoiar</button>
+        </div>
+      </div>
+      
+      <div class="modal-step" data-step="2">
+        <div class="modal-step-header">
+          <h4>Forneça suas informações</h4>
+        </div>
+        <div class="modal-form-content" id="step-2-form">
+          <div class="form-group">
+            <input type="text" id="modal-nome" class="form-input" placeholder="Nome">
+          </div>
+          <div class="form-group">
+            <input type="text" id="modal-sobrenome" class="form-input" placeholder="Sobrenome">
+          </div>
+          <div class="form-group">
+            <input type="text" id="modal-cpf" class="form-input" placeholder="CPF">
+          </div>
+          <div class="form-group">
+            <input type="tel" id="modal-telefone" class="form-input" placeholder="Telefone">
+          </div>
+          <div class="form-group">
+            <input type="email" id="modal-email" class="form-input" placeholder="Email">
+          </div>
+          <button class="button-primary-gradient" id="modal-goto-step3">Continuar</button>
+        </div>
+      </div>
+      
+      <div class="modal-step" data-step="3-unitaria">
+        <div class="modal-step-header">
+          <h4>Selecione o método de pagamento</h4>
+        </div>
+        <div class="modal-form-content" id="step-3-unitaria-form">
+          <div class="payment-options-grid">
+            <button class="payment-option-button active" data-target="pix">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22v-2"></path><path d="M12 16v-2"></path><path d="M12 10V8"></path><path d="M12 4V2"></path><path d="M18.6 16.5l1.5-1"></path><path d="M18.6 8.5l1.5 1"></path><path d="M22 12h-2"></path><path d="M18 12h-2"></path><path d="M8 12H6"></path><path d="M4 12H2"></path><path d="M15.1 18.2l-1-1.5"></path><path d="M15.1 5.8l-1 1.5"></path><path d="M8.9 18.2l1-1.5"></path><path d="M8.9 5.8l1 1.5"></path><path d="M3.9 16.5l-1.5-1"></path><path d="M3.9 8.5l-1.5 1"></path></g></svg>
+              <span>Pix</span>
+            </button>
+            <button class="payment-option-button" data-target="boleto">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-2h18v2H3zM3 10v-2h18v2H3zM3 6v-2h18v2H3zM3 14v-2h18v2H3zM8 22v-6h8v6H8zM12 16V2"></path></svg>
+              <span>Boleto</span>
+            </button>
+            <button class="payment-option-button" data-target="cartao">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+              <span>Cartão</span>
+            </button>
+          </div>
+          <div class="payment-content-viewer">
+            <div class="payment-content-block active" id="payment-content-pix">
+              <p>Escaneie o QR Code para doar:</p>
+              <div class="mock-qr-code">
+                <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M0 0H38V38H0V0ZM10 10H28V28H10V10Z" fill="#4A4A4A"/>
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M62 0H100V38H62V0ZM72 10H90V28H72V10Z" fill="#4A4A4A"/>
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M0 62H38V100H0V62ZM10 72H28V90H10V72Z" fill="#4A4A4A"/>
+                  <path d="M62 62H71V71H62V62Z" fill="#4A4A4A"/>
+                  <path d="M71 62H80V71H71V62Z" fill="#4A4A4A"/>
+                  <path d="M80 62H89V71H80V62Z" fill="#4A4A4A"/>
+                  <path d="M89 62H98V71H89V62Z" fill="#4A4A4A"/>
+                  <path d="M62 71H71V80H62V71Z" fill="#4A4A4A"/>
+                  <path d="M80 71H89V80H80V71Z" fill="#4A4A4A"/>
+                  <path d="M89 71H98V80H89V71Z" fill="#4A4A4A"/>
+                  <path d="M62 80H71V89H62V80Z" fill="#4A4A4A"/>
+                  <path d="M71 80H80V89H71V80Z" fill="#4A4A4A"/>
+                  <path d="M80 80H89V89H80V80Z" fill="#4A4A4A"/>
+                  <path d="M89 80H98V89H89V80Z" fill="#4A4A4A"/>
+                  <path d="M62 89H71V98H62V89Z" fill="#4A4A4A"/>
+                  <path d="M71 89H80V98H71V89Z" fill="#4A4A4A"/>
+                  <path d="M89 89H98V98H89V89Z" fill="#4A4A4A"/>
+                </svg>
+              </div>
+              <p class="small-text">Ou copie o código Pix:</p>
+              <input type="text" class="form-input" readonly value="00020126580014br.gov.bcb.pix...3e8b1" id="pix-code-input">
+              <button class="button-primary-gradient" id="copy-pix-button">Copiar Código Pix</button>
+            </div>
+            <div class="payment-content-block" id="payment-content-boleto">
+              <p>Escaneie o Código de Barras:</p>
+              <div class="mock-barcode"></div>
+              <p class="small-text">Ou copie o número:</p>
+              <input type="text" class="form-input" readonly value="34191.79001 01023.234567 80101.000015 9 91820000017990" id="boleto-code-input">
+              <button class="button-primary-gradient" id="copy-boleto-button">Copiar Número</button>
+            </div>
+            <div class="payment-content-block" id="payment-content-cartao">
+              <div class="card-input-field">
+                <input type="text" id="unitaria-card-numero" class="form-input" placeholder="Número do cartão">
+              </div>
+              <div class="card-input-grid">
+                <input type="text" id="unitaria-card-vencimento" class="form-input" placeholder="Vencimento (MM/AA)">
+                <input type="text" id="unitaria-card-cvv" class="form-input" placeholder="CVV">
+              </div>
+              <button class="button-primary-gradient" style="margin-top: 25px;">Doar</button>
+            </div>
+          </div>
+          <div class="payment-total">
+            <span>Total</span>
+            <b id="total-unitaria-display">R$ XX,XX</b>
+          </div>
+        </div>
+      </div>
+      
+      <div class="modal-step" data-step="3-socio">
+        <div class="modal-step-header">
+          <h4>Selecione o método de pagamento</h4>
+        </div>
+        <div class="modal-form-content" id="step-3-socio-form">
+          <div class="payment-options">
+            <button class="payment-option-button active">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+              <span>Cartão</span>
+            </button>
+          </div>
+          <div class="card-input-field">
+            <input type="text" id="socio-card-numero" class="form-input" placeholder="Número do cartão">
+          </div>
+          <div class="card-input-grid">
+            <input type="text" id="socio-card-vencimento" class="form-input" placeholder="Vencimento (MM/AA)">
+            <input type="text" id="socio-card-cvv" class="form-input" placeholder="CVV">
+          </div>
+          <small class="payment-note">
+            Ao se tornar sócio, você autoriza uma doação mensal neste valor, debitada automaticamente no seu cartão. Você pode cancelar sua assinatura quando quiser
+          </small>
+          <div class="payment-content" style="display: none;"></div>
+          <div class="payment-total">
+            <span>Total</span>
+            <b id="total-socio-display">R$ XX,XX/mês</b>
+          </div>
+          <button class="button-primary-gradient">Me tornar sócio</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div id="thank-you-modal-overlay"></div>
+  <div id="thank-you-modal-container">
+    <img src="/logo.png" alt="Logo Casa do Amor" class="thank-you-logo">
+    <h2 id="thank-you-title"></h2>
+    <p id="thank-you-text1"></p>
+    <p id="thank-you-text2"></p>
+    <p id="thank-you-text3"></p>
+    <button class="button-primary-gradient thank-you-button" id="thank-you-ok-button"></button>
+  </div>
+
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
